@@ -7,14 +7,13 @@ def moveX(ser):
     ser.write(b'x')
 
 
+def moveNX(ser):
+    # move stepper by 1 unit in -x
+    ser.write(b'X')
+
 def moveY(ser):
     # move stepper by 1 unit in y
     ser.write(b'y')
-
-
-def resetPos(ser):
-    # reset steppers to 0,0 after each analysis
-    pass
 
 
 def resetPos(ser):
@@ -40,8 +39,17 @@ if __name__ == "__main__":
     stepSizeX = 10
     stepSizeY = 10
 
-    for x in range(stepSizeX):
-        moveX(ser)
+    for y in range(stepSizeY):
+        for x in range(stepSizeX):
+            if y % 2 == 1: 
+                moveX(ser)
+                # takePhoto()
+            else:
+                moveNX(ser)
+                # takePhoto()
+        moveY(ser)
+        # takePhoto()
+    resetPos(ser)
 
     ser.close()
     quit()
