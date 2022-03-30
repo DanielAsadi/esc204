@@ -18,6 +18,7 @@ def moveY(ser):
 
 def resetPos(ser):
     # reset steppers to 0,0 after each analysis
+    # basically move up 9 ops to restore to original position
     pass
 
 def takePhoto():
@@ -36,19 +37,20 @@ if __name__ == "__main__":
             print('Serial port error. Reconecting...')
         time.sleep(2)
 
-    stepSizeX = 10
-    stepSizeY = 10
+    # stepSizeX = 10
+    # stepSizeY = 10
 
-    for y in range(stepSizeY):
-        for x in range(stepSizeX):
-            if y % 2 == 1: 
+    for y in range(10): # 100 photos in total
+        # takePhoto()
+        for x in range(9):
+            if y % 2 == 0: 
                 moveX(ser)
                 # takePhoto()
             else:
                 moveNX(ser)
                 # takePhoto()
-        moveY(ser)
-        # takePhoto()
+        if y != 9:
+            moveY(ser)
     resetPos(ser)
 
     ser.close()
