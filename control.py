@@ -19,7 +19,7 @@ def moveY(ser):
 def resetPos(ser):
     # reset steppers to 0,0 after each analysis
     # basically move up 9 ops to restore to original position
-    pass
+    ser.write(b'Y')
 
 def takePhoto():
     # access luminara api:
@@ -31,11 +31,12 @@ if __name__ == "__main__":
     while True:
         try:
             # make sure the 'COM#' is set according the Windows Device Manager
-            ser = serial.Serial('COM13', 115200, timeout=1)
+            ser = serial.Serial('/dev/cu.usbmodem11401', 115200, timeout=1)
+            print("connected to serial")
             break
         except:
-            print('Serial port error. Reconecting...')
-        time.sleep(2)
+            print('Serial port error. Reconnecting...')
+        time.sleep(1)
 
     # stepSizeX = 10
     # stepSizeY = 10
@@ -45,13 +46,17 @@ if __name__ == "__main__":
         for x in range(9):
             if y % 2 == 0: 
                 moveX(ser)
+                time.sleep(1)
                 # takePhoto()
             else:
                 moveNX(ser)
+                time.sleep(1)
                 # takePhoto()
         if y != 9:
             moveY(ser)
+            time.sleep(1)
     resetPos(ser)
+    time.sleep(1)
 
     ser.close()
     quit()

@@ -3,7 +3,8 @@ const int dirPin1 = 2;
 const int stepPin1 = 3;
 const int dirPin2 = 4;
 const int stepPin2 = 5;
-const int stepsPerRevolution = 200;
+const int stepsPerRevolution = 10;
+int motion;
 
 void setup()
 {
@@ -12,36 +13,57 @@ void setup()
   pinMode(dirPin1, OUTPUT);
   pinMode(stepPin2, OUTPUT);
   pinMode(dirPin2, OUTPUT);
+  Serial.begin(115200);
 }
 void loop()
 {
-  // Set motor direction clockwise
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    motion = Serial.read();
+    if(motion == 'x') spinx();
+    if(motion == 'y') spiny();
+    if(motion == 'X') spinNx();
+    if(motion == 'Y'){
+      digitalWrite(dirPin2, LOW);
+      for(int y = 0; y < stepsPerRevolution*10; y++)
+      {
+        digitalWrite(stepPin2, HIGH);
+        delayMicroseconds(1000);
+        digitalWrite(stepPin2, LOW);
+        delayMicroseconds(1000);
+      }
+    
+    }
+  }
+}
+
+void spinx()
+{
   digitalWrite(dirPin1, HIGH);
-  digitalWrite(dirPin2, HIGH);
-
-  // Spin motor slowly
-//  for(int x = 0; x < stepsPerRevolution; x++)
-//  {
-//    digitalWrite(stepPin, HIGH);
-//    delayMicroseconds(2000);
-//    digitalWrite(stepPin, LOW);
-//    delayMicroseconds(2000);
-//  }
-//  delay(1000); // Wait a second
-  
-  // Set motor direction counterclockwise
-  //digitalWrite(dirPin, LOW);
-
-  // Spin motor quickly
   for(int x = 0; x < stepsPerRevolution; x++)
   {
     digitalWrite(stepPin1, HIGH);
-    delayMicroseconds(500);
+    delayMicroseconds(1000);
     digitalWrite(stepPin1, LOW);
-    delayMicroseconds(500);
+    delayMicroseconds(1000);
   }
+}
 
-    // Spin motor quickly
+void spinNx()
+{
+  digitalWrite(dirPin1, LOW);
+  for(int x = 0; x < stepsPerRevolution; x++)
+  {
+    digitalWrite(stepPin1, HIGH);
+    delayMicroseconds(1000);
+    digitalWrite(stepPin1, LOW);
+    delayMicroseconds(1000);
+  }
+}
+
+void spiny()
+{
+  digitalWrite(dirPin2, HIGH);
   for(int x = 0; x < stepsPerRevolution; x++)
   {
     digitalWrite(stepPin2, HIGH);
@@ -49,5 +71,4 @@ void loop()
     digitalWrite(stepPin2, LOW);
     delayMicroseconds(1000);
   }
-  //delay(1000); // Wait a second
 }
