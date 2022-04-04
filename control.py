@@ -1,5 +1,10 @@
 import serial
 import time
+import sys
+import matlab.engine
+
+positionOfPath = 1
+sys.path.insert(positionOfPath, '/Users/jorrynlu/Desktop/220407 ESC204 Design Pitch/esc204/LucamTakeSnapshot.m')
 
 
 def moveX(ser):
@@ -21,10 +26,11 @@ def resetPos(ser):
     # basically move up 9 ops to restore to original position
     ser.write(b'Y')
 
-def takePhoto():
-    # access luminara api:
-    # https://www.lumenera.com/media/wysiwyg/support/pdf/Teledyne_Lumenera-USB_Camera-API_Reference_Manual.pdf
-    pass
+
+def takePhoto(camNumber):
+    eng = matlab.engine.start_matlab()
+    eng.LucamGetSnapshot(camNumber)
+    eng.quit()
 
 
 if __name__ == "__main__":
@@ -38,20 +44,17 @@ if __name__ == "__main__":
             print('Serial port error. Reconnecting...')
         time.sleep(1)
 
-    # stepSizeX = 10
-    # stepSizeY = 10
-
     for y in range(10): # 100 photos in total
-        # takePhoto()
+        # takePhoto(camNumber)
         for x in range(9):
             if y % 2 == 0: 
                 moveX(ser)
                 time.sleep(1)
-                # takePhoto()
+                # takePhoto(camNumber)
             else:
                 moveNX(ser)
                 time.sleep(1)
-                # takePhoto()
+                # takePhoto(camNumber)
         if y != 9:
             moveY(ser)
             time.sleep(1)
