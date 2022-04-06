@@ -3,7 +3,7 @@ const int dirPin1 = 2;
 const int stepPin1 = 3;
 const int dirPin2 = 4;
 const int stepPin2 = 5;
-const int stepsPerRevolution = 10;
+const int stepsPerRevolution = 100;
 int motion;
 
 void setup()
