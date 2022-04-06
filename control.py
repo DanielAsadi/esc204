@@ -34,6 +34,7 @@ def takePhoto(camNumber):
 
 
 if __name__ == "__main__":
+    camNumber = 1
     while True:
         try:
             # make sure the 'COM#' is set according the Windows Device Manager
