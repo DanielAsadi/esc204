@@ -1,3 +1,4 @@
+from fileinput import filename
 import serial
 import time
 import sys
@@ -27,9 +28,9 @@ def resetPos(ser):
     ser.write(b'Y')
 
 
-def takePhoto(camNumber):
+def takePhoto(camNumber, filename):
     eng = matlab.engine.start_matlab()
-    eng.LucamGetSnapshot(camNumber)
+    eng.LucamTakeSnapshot(camNumber, filename)
     eng.quit()
 
 
@@ -44,21 +45,25 @@ if __name__ == "__main__":
         except:
             print('Serial port error. Reconnecting...')
         time.sleep(1)
-
+    path = ""
+    j = 1
     for y in range(10): # 100 photos in total
-        # takePhoto(camNumber)
+        filename = path + j
+        takePhoto(camNumber, filename)
         for x in range(9):
             if y % 2 == 0: 
                 moveX(ser)
                 time.sleep(1)
-                # takePhoto(camNumber)
+                takePhoto(camNumber, filename)
             else:
                 moveNX(ser)
                 time.sleep(1)
-                # takePhoto(camNumber)
+                takePhoto(camNumber, filename)
+            j += 1
         if y != 9:
             moveY(ser)
             time.sleep(1)
+        j += 1
     resetPos(ser)
     time.sleep(1)
 
