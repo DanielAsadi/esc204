@@ -3,7 +3,7 @@ const int dirPin1 = 2;
 const int stepPin1 = 3;
 const int dirPin2 = 4;
 const int stepPin2 = 5;
-const int stepsPerRevolution = 100;
+const int stepsPerRevolution = 3;
 int motion;
 
 void setup()
@@ -24,7 +24,7 @@ void loop()
     if(motion == 'y') spiny();
     if(motion == 'X') spinNx();
     if(motion == 'Y'){
-      digitalWrite(dirPin2, LOW);
+      digitalWrite(dirPin2, HIGH);
       for(int y = 0; y < stepsPerRevolution*10; y++)
       {
         digitalWrite(stepPin2, HIGH);
@@ -63,7 +63,7 @@ void spinNx()
 
 void spiny()
 {
-  digitalWrite(dirPin2, HIGH);
+  digitalWrite(dirPin2, LOW);
   for(int x = 0; x < stepsPerRevolution; x++)
   {
     digitalWrite(stepPin2, HIGH);
