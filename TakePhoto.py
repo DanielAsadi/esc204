@@ -2,21 +2,21 @@ import sys
 import matlab.engine
 
 positionOfPath = 1
-sys.path.insert(positionOfPath, '/Users/jorrynlu/Desktop/220407 ESC204 Design Pitch/esc204/TestFunction.m')
-# sys.path.insert(positionOfPath, 'C:\\Users\\yangy\\OneDrive\\Documents\\MATLAB\\Lumenera')
+# sys.path.insert(positionOfPath, '/Users/jorrynlu/Desktop/220407 ESC204 Design Pitch/esc204/TestFunction.m')
+sys.path.insert(positionOfPath, 'C:\\Users\\yangy\\Downloads\\widget_lab_2\\esc204')
 
-# def TestFunc(inpNum):
-#     eng = matlab.engine.start_matlab()
-#     eng.TestFunction(inpNum)
-#     eng.quit()
-
-def TakePic(camNumber):
+def TestFunc(inpNum):
     eng = matlab.engine.start_matlab()
-    eng.LucamGetSnapshot(camNumber)
+    eng.TestFunction(inpNum)
+    eng.quit()
+
+def TakePic(camNumber, filename):
+    eng = matlab.engine.start_matlab()
+    # eng.simple_script(nargout=1)
+    eng.LucamTakeSnapshot(camNumber, filename)
     eng.quit()
 
 if __name__ == "__main__":
     # TestFunc(20)
-
-    # if some input prompts camera to take a photo...
-    TakePic(13)
+    filename = 'test.csv'
+    TakePic(1, filename)
